@@ -85,8 +85,7 @@ public class ejercicio1 {
         // si se le envió cambiar el estado en la lista
         // ,todo esto respetando la inmutabilidad.
 
-        var emailsSend = emails.stream().map(element -> {if(element.isEstado()) return element.setEstado(!element.isEstado());
-                                                                        } ).distinct().collect(Collectors.toList());
+        var emailsSend = emails.stream().map(element -> (element.isEstado()) ? element.setEstado(element);).distinct().collect(Collectors.toList());
 
 
 /*        System.out.println(emailsDistinct.size());
