@@ -85,8 +85,24 @@ public class ejercicio1 {
         // si se le envió cambiar el estado en la lista
         // ,todo esto respetando la inmutabilidad.
 
-        var emailsSend = emails.stream().map(element -> {if(element.isEstado()) return element.setEstado(!element.isEstado());
-                                                                        } ).distinct().collect(Collectors.toList());
+
+        List <Email> newList =  emails.stream()
+                .filter(c -> {
+                    if(c.isEstado() == true) {
+                        System.out.println("se envio");
+                        c.setEstado(false);
+                    }
+                    else
+                        System.out.println("No se envio");
+                    return false;
+                }).
+                collect(Collectors.toList());
+
+        System.out.println("===================");
+
+                emails.stream()
+                        .map(c -> c.isEstado())
+                        .forEach(System.out::println);
 
 
 /*        System.out.println(emailsDistinct.size());
