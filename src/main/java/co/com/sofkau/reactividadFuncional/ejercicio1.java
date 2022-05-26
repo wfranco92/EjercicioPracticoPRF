@@ -20,6 +20,8 @@ package co.com.sofkau.reactividadFuncional;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class ejercicio1 {
@@ -58,6 +60,11 @@ public class ejercicio1 {
                 new Email("cabrigo@garmendia.cl", true),
                 new Email("c_arnes@hotmail.com", true));
 
+        Pattern pattern = Pattern
+                .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+
+
         // a. Distinct: para ver si hay correo repetidos, si hay correos repetidos eliminarlos
         var emailsDistinct = emails.stream().map(element -> element.getValor()).distinct().collect(Collectors.toList());
 
@@ -67,9 +74,19 @@ public class ejercicio1 {
         var emailsFilterByoutlook = emailsDistinct.stream().filter(element -> element.contains("outlook")).collect(Collectors.toList());
 
         // c. Map: para saber si todos los correos cumple con todas las condiciones (Que cuente con el @ y el dominio)
-        var emailsVerify = emailsDistinct.stream()
-                .map(element -> element.contains("@gmail.com") || element.contains("@hotmail.com") || element.contains("@outlook.com"))
-                .collect(Collectors.toList());
+
+
+        var emailsVerifys = emails.stream().map(element -> {
+            Matcher matcher = pattern.matcher(element.getValor());
+            if(matcher.find()){
+                System.out.println("El email "+ element.getValor() + "Es Valido");
+            }else{
+                System.out.println("El email ingresado NO es válido.");
+            }
+            return element ;
+        }).collect(Collectors.toList());
+
+
 
         // d. Saber la cantidad de correos que hay, sin usar un ciclo
         System.out.println("cantidad total de correos " + emails.size());
@@ -85,17 +102,21 @@ public class ejercicio1 {
         // si se le envió cambiar el estado en la lista
         // ,todo esto respetando la inmutabilidad.
 
-        var emailsSend = emails.stream().map(element -> (element.isEstado()) ? element.setEstado(element);).distinct().collect(Collectors.toList());
+        List <Email> newList =  emails.stream()
+                .filter(c -> {
+                    if(c.isEstado() == true) {
+                        //System.out.println("se envio");
+                        c.setEstado(false);
+                    }
+                    return false;
+                }).
+                collect(Collectors.toList());
 
+        System.out.println("===================");
 
-/*        System.out.println(emailsDistinct.size());
-        System.out.println(emailsVerify.size());*/
-        /*System.out.println(emailsDistinct.size());
-        System.out.println(emails.size());
-
-        System.out.println(emailsFilterBygmail);
-        System.out.println(emailsFilterByhotmail);
-        System.out.println(emailsFilterByoutlook);*/
+                emails.stream()
+                        .map(c -> c.isEstado())
+                        .forEach(System.out::println);
 
     }
 }
