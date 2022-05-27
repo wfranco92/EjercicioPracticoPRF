@@ -1,40 +1,55 @@
 package co.com.sofkau.reactividadFuncional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import reactor.core.publisher.Flux;
 
 public class Ejercicio2 {
 
 
     public static void main(String[] args) {
 
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("chat ...... ");
+
+        String cadena = scanner.nextLine();
+
+        String[] arreglo = cadena.split(" ");
+
+        List<String> chat = Arrays.asList(arreglo);
+
+        Flux<String> nuevoChat = Flux.fromIterable(chat).map(p -> comparar(p));
+
+        nuevoChat.subscribe(x -> System.out.print(" " + x + " "));
+    }
+    private static String comparar(String p1) {
+        String retorno = "****";
+
         List<String> groserias = new ArrayList<>();
-        groserias.add("HP");
-        groserias.add("MP");
-        groserias.add("CV");
-        groserias.add("HV");
-        groserias.add("G");
-        groserias.add("M");
-        groserias.add("P");
-        groserias.add("I");
-        groserias.add("B");
-        groserias.add("O");
+        groserias.add("Hijueputa");
+        groserias.add("MalParido");
+        groserias.add("CareVerga");
+        groserias.add("Hijo de verga");
+        groserias.add("Guevon");
+        groserias.add("Marica");
+        groserias.add("Puta");
+        groserias.add("Imbecil");
+        groserias.add("Bobo");
+        groserias.add("Estupido");
 
-        List<String> palabras = new ArrayList<>();
-        Scanner valida = new Scanner(System.in);
-        System.out.println("Digite S para ingresar palabras o N para salir ");
-        String opcion = valida.nextLine();
-        while (opcion.equals("S")){
-            System.out.println("Ingrese palabra");
-            Scanner palabra = new Scanner(System.in);
-            palabras.add(palabra.nextLine());
-            System.out.println("Digite S para ingresar palabras o N para salir ");
-            Scanner validaopcion = new Scanner(System.in);
-            opcion = validaopcion.nextLine();
+        Stream<String> res = groserias.stream().filter(x -> x.equals(p1));
+
+        String r = res.collect(Collectors.joining());
+
+        if(r.equals(p1)){
+            return retorno;
         }
-
-        palabras.stream()
-                .forEach((palabra)-> System.out.println(palabra));
+        return p1;
     }
 }
